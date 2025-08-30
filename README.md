@@ -31,7 +31,7 @@ pip install marketdataprovider
 ### Basic Example
 
 ```python
-from marketdataprovider import MarketDataProvider, YFinanceBroker, MockBroker
+from marketdataprovider import MarketDataProvider, YFinanceBroker, MockBroker, FinnhubBroker
 
 symbol = "AAPL"
 
@@ -44,14 +44,20 @@ print(provider.get_profile(symbol))
 mock_provider = MarketDataProvider(MockBroker())
 print(mock_provider.get_price(symbol))
 print(mock_provider.get_profile(symbol))
+
+# Finnhub broker (requires API key)
+# finnhub_provider = MarketDataProvider(FinnhubBroker("YOUR_API_KEY"))
+# print(finnhub_provider.get_price(symbol))
 ```
 
 ### Demo Script
 
-Run the included demo to see both brokers in action:
+Run the included demo to see all brokers in action:
 ```bash
 python marketdataprovider/demo_brokers.py
 ```
+
+Note: The demo includes FinnhubBroker which requires a valid API key. You can get one for free at [finnhub.io](https://finnhub.io).
 
 ---
 
@@ -93,14 +99,16 @@ class MyCustomBroker(BaseBroker):
 
 - **YFinanceBroker:** Real data from Yahoo Finance.
 - **MockBroker:** Returns mock data for all methods.
+- **FinnhubBroker:** Real data from Finnhub API (requires API key).
 
 ---
 
 ## Requirements
 
 - Python 3.12+
-- yfinance
-- pydantic
+- yfinance>=0.2.37
+- pydantic>=2.7.1
+- finnhub-python>=2.4.0 (optional, for FinnhubBroker)
 
 ---
 
