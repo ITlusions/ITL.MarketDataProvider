@@ -1,7 +1,7 @@
 import json
 import finnhub
-from models import CompanyInfo, Fundamentals
-from base.broker import BaseBroker
+from ..models import CompanyInfo, Fundamentals
+from ..base.broker import BaseBroker
 
 class FinnhubBroker(BaseBroker):
     """Broker implementation using Finnhub API."""
@@ -70,4 +70,70 @@ class FinnhubBroker(BaseBroker):
         except Exception as e:
             return json.dumps({"error": f"Error fetching fundamentals for {symbol}: {e}"})
 
-    # Implement other methods as needed, following Finnhub API docs.
+    def get_financials(self, symbol: str) -> str:
+        try:
+            financials = self.client.company_basic_financials(symbol, 'metric')
+            if not financials:
+                return json.dumps({"error": f"No financials found for {symbol}"})
+            return json.dumps(financials, indent=2)
+        except Exception as e:
+            return json.dumps({"error": f"Error fetching financials for {symbol}: {e}"})
+
+    def get_ratios(self, symbol: str) -> str:
+        try:
+            metrics = self.client.company_basic_financials(symbol, 'metric')
+            if not metrics:
+                return json.dumps({"error": f"No ratios found for {symbol}"})
+            return json.dumps(metrics, indent=2)
+        except Exception as e:
+            return json.dumps({"error": f"Error fetching ratios for {symbol}: {e}"})
+
+    def get_recommendations(self, symbol: str) -> str:
+        try:
+            recommendations = self.client.recommendation_trends(symbol)
+            if not recommendations:
+                return json.dumps({"error": f"No recommendations found for {symbol}"})
+            return json.dumps(recommendations, indent=2)
+        except Exception as e:
+            return json.dumps({"error": f"Error fetching recommendations for {symbol}: {e}"})
+
+    def get_news(self, symbol: str, num_stories: int = 3) -> str:
+        try:
+            from datetime import datetime, timedelta
+            import time
+            
+            # Get news from last 7 days
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=7)
+            
+            news = self.client.company_news(symbol, 
+                                          _from=start_date.strftime('%Y-%m-%d'), 
+                                          to=end_date.strftime('%Y-%m-%d'))
+            if not news:
+                return json.dumps({"error": f"No news found for {symbol}"})
+            return json.dumps(news[:num_stories], indent=2)
+        except Exception as e:
+            return json.dumps({"error": f"Error fetching news for {symbol}: {e}"})
+
+    def get_indicators(self, symbol: str, period: str = "3mo") -> str:
+        try:
+            # Get technical indicators - using RSI as an example
+            from datetime import datetime, timedelta
+            import time
+            
+            now = int(time.time())
+            if period == "3mo":
+                start = int((datetime.now() - timedelta(days=90)).timestamp())
+            else:
+                start = int((datetime.now() - timedelta(days=30)).timestamp())
+                
+            rsi = self.client.technical_indicator(symbol=symbol, 
+                                                 resolution='D', 
+                                                 _from=start, 
+                                                 to=now, 
+                                                 indicator='rsi', 
+                                                 indicator_fields={'timeperiod': 14})
+            
+            return json.dumps(rsi, indent=2)
+        except Exception as e:
+            return json.dumps({"error": f"Error fetching indicators for {symbol}: {e}"})

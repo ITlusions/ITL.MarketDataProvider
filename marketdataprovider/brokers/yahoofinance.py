@@ -1,6 +1,6 @@
 import json
-from models import CompanyInfo, Fundamentals
-from base.broker import BaseBroker
+from ..models import CompanyInfo, Fundamentals
+from ..base.broker import BaseBroker
 
 class YFinanceBroker(BaseBroker):
     """Broker implementation using yfinance."""

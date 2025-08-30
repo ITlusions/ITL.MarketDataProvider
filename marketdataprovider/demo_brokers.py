@@ -1,5 +1,5 @@
-from broker import YFinanceBroker, MockBroker, FinnhubBroker
-from provider import MarketDataProvider
+from .broker import YFinanceBroker, MockBroker, FinnhubBroker
+from .provider import MarketDataProvider
 
 def show_data(provider, symbol):
     print(f"--- Data for {symbol} using {provider.broker.__class__.__name__} ---")

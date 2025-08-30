@@ -7,22 +7,25 @@ This guide will help you understand, extend, and use the MarketDataProvider pack
 ## 1. Package Structure
 
 ```
-marketdataprovider/
-    __init__.py
-    models.py
-    provider.py
-    broker.py
-    demo_brokers.py
-    setup.py
+/
     README.md
+    DEVELOPER.md  
     requirements.txt
-    base/
+    .gitignore
+    marketdataprovider/
         __init__.py
+        models.py
+        provider.py
         broker.py
-    brokers/
-        finnhub.py
-        mock.py
-        yahoofinance.py
+        demo_brokers.py
+        setup.py
+        base/
+            __init__.py
+            broker.py
+        brokers/
+            finnhub.py
+            mock.py
+            yahoofinance.py
 ```
 
 ---
@@ -141,9 +144,9 @@ Current Price: ...
 ## 9. Requirements
 
 - Python 3.12+
-- yfinance
-- pydantic
-- finnhub-python (for FinnhubBroker)
+- yfinance>=0.2.37
+- pydantic>=2.7.1
+- finnhub-python>=2.4.0 (for FinnhubBroker)
 
 Install dependencies:
 
@@ -179,12 +182,14 @@ class ExampleBroker(BaseBroker):
 
 - **models.py:** Contains Pydantic models for structured data (`CompanyInfo`, `Fundamentals`).
 - **provider.py:** Main provider class that delegates to a broker.
-- **broker.py:** Protocol and broker implementations (may import from `brokers/`).
+- **broker.py:** Protocol definition and imports for broker implementations.
 - **base/broker.py:** Base class with default "not implemented" methods.
-- **brokers/:** Folder for individual broker implementations.
+- **brokers/:** Folder for individual broker implementations (`mock.py`, `yahoofinance.py`, `finnhub.py`).
 - **demo_brokers.py:** Demo script to show usage of all brokers.
-- **setup.py:** Package setup for pip installation.
-- **README.md:** Main documentation.
+- **setup.py:** Package setup for pip installation (located in marketdataprovider/ folder).
+- **README.md:** Main documentation (located in project root).
+- **DEVELOPER.md:** Developer guide (located in project root).
+- **requirements.txt:** Package dependencies (located in project root).
 
 ---
 

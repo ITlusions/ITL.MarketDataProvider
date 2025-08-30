@@ -1,6 +1,6 @@
 import json
-from models import CompanyInfo, Fundamentals
-from base.broker import BaseBroker
+from ..models import CompanyInfo, Fundamentals
+from ..base.broker import BaseBroker
 
 class MockBroker(BaseBroker):
     """Mock broker for testing purposes."""
