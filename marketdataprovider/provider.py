@@ -1,4 +1,4 @@
-from broker import BrokerAPI
+from .broker import BrokerAPI
 
 class MarketDataProvider:
     """Generic market data provider that can use any broker API."""

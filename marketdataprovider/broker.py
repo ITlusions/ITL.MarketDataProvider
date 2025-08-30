@@ -10,3 +10,10 @@ class BrokerAPI(Protocol):
     def get_recommendations(self, symbol: str) -> str: ...
     def get_news(self, symbol: str, num_stories: int = 3) -> str: ...
     def get_indicators(self, symbol: str, period: str = "3mo") -> str: ...
+
+# Import concrete broker implementations
+from .brokers.mock import MockBroker
+from .brokers.yahoofinance import YFinanceBroker
+from .brokers.finnhub import FinnhubBroker
+
+__all__ = ["BrokerAPI", "MockBroker", "YFinanceBroker", "FinnhubBroker"]
